@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using SampleXamarin2.Models;
+using System.Text.Json;
 
 namespace SampleXamarin2
 {
@@ -33,8 +36,16 @@ namespace SampleXamarin2
 
         private bool checkCredentials(string studentId, string name)
         {
-            // send request
+            HttpClient http = new HttpClient();
+            Uri destination = new Uri(string.Format("https://localhost:3000/api/checkins", string.Empty));
+            CheckIn item = new CheckIn(studentId, name);
 
+
+            string json = JsonSerializer.Serialize<CheckIn>(item,null);
+            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+
+
+            // send request
 
             // check status code of response
             // 201 => successful
